@@ -21,9 +21,32 @@ app = FastAPI(
 
 origins = [o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()]
 
+allow_origins = []
+allow_origin_regex = None
+regex_parts = []
+
+for origin in origins:
+    if "*" in origin:
+        # Convert wildcard origin (e.g. "https://*.vercel.app") to regex pattern
+        pattern = ""
+        for char in origin:
+            if char == "*":
+                pattern += ".*"
+            elif char in ".+?^${}()|[]\\":
+                pattern += "\\" + char
+            else:
+                pattern += char
+        regex_parts.append(f"^{pattern}$")
+    else:
+        allow_origins.append(origin)
+
+if regex_parts:
+    allow_origin_regex = "|".join(regex_parts)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allow_origins,
+    allow_origin_regex=allow_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
