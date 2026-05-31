@@ -1,3 +1,11 @@
+## Live Demo
+
+### Frontend
+🔗 https://ethara-assigment.vercel.app/
+
+### Backend API
+🔗 https://ethara-api-798i.onrender.com
+
 # Ethara — Inventory & Order Management System
 
 A production-ready, containerized full-stack application for managing products, customers, orders, and inventory tracking.
